@@ -1,0 +1,136 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class Bullet {
+	+Bullet(int direction, QGraphicsItem* parent)
+	-direction : int
+	+move() : void
+}
+
+
+class Enemy {
+	+Enemy(QGraphicsItem* parent)
+	+~Enemy()
+	-movie : QMovie*
+	-dx : int
+	-dy : int
+	+move() : void
+	+updatePixmap() : void
+}
+
+
+class Game {
+	+Game(QWidget* parent)
+	-currentFormation : Formation
+	+health : Health*
+	+player : Player*
+	+scene : QGraphicsScene*
+	-backgroundMusic : QMediaPlayer*
+	-addPlayerButton : QPushButton*
+	-uiContainer : QWidget*
+	+score : Score*
+	-ui : Ui::Form
+	-players : std::vector<Player*>
+	+addPlayer() : void
+	+addPlayerOfficer() : void
+	-arrangeFormation(Formation formation) : void
+	#keyPressEvent(QKeyEvent* event) : void
+	-on_comboBox_activated(int index) : void
+	-on_pushButton_2_clicked() : void
+	-on_pushButton_3_clicked() : void
+	-on_pushButton_clicked() : void
+	+removeLastPlayer() : void
+	-setFormation(Formation formation) : void
+}
+
+
+class Health {
+	+Health(QGraphicsItem* parent)
+	+getHealth() : int
+	-health : int
+	+decrease() : void
+}
+
+
+class Player {
+	+Player(const QString& animationFile, QGraphicsItem* parent)
+	+~Player()
+	-movie : QMovie*
+	-shootSound : QSoundEffect*
+	-shootDirection : int
+	-speed : int
+	+attack_animation(const QString& animationFile, int duration, const QString& basicAnimationFile) : void
+	+keyPressEvent(QKeyEvent* event) : void
+	+move(int dx, int dy) : void
+	+setShootDirection(int direction) : void
+	+spawn() : void
+	+updatePixmap() : void
+}
+
+
+class PlayerOfficer {
+	+PlayerOfficer(Game* gameInstance, QGraphicsItem* parent)
+	-game : Game*
+	+callForSupport() : void
+	+keyPressEvent(QKeyEvent* event) : void
+}
+
+
+class Score {
+	+Score(QGraphicsItem* parent)
+	+getScore() : int
+	-score : int
+	+increase() : void
+}
+
+
+enum Formation {
+	Column
+	Line
+	Square
+	Wave
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+Player <|-- PlayerOfficer
+
+
+
+
+
+/' Aggregation relationships '/
+
+Game *-- Formation
+
+
+Game o-- Health
+
+
+Game "2" o-- Player
+
+
+Game o-- Score
+
+
+PlayerOfficer o-- Game
+
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml
